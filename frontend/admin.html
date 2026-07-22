@@ -562,8 +562,8 @@
     </main>
 
     <script>
-        const API_PROJECTS = 'https://portfoliokhai-production.up.railway.app';
-        const API_PROFILE = 'https://portfoliokhai-production.up.railway.app';
+        const API_PROJECTS = 'https://portfoliokhai-production.up.railway.app/projects/';
+        const API_PROFILE = 'https://portfoliokhai-production.up.railway.app/profile';
         const UPLOAD_URL = 'https://portfoliokhai-production.up.railway.app';
         let globalProjects = [];
 
@@ -717,7 +717,7 @@
 
 
         // --- EXPERIENCE LOGIC ---
-        const API_EXPERIENCE = 'https://portfoliokhai-production.up.railway.app';
+        const API_EXPERIENCE = 'https://portfoliokhai-production.up.railway.app/experiences';
         let globalExperiences = [];
 
         async function loadExperiences() {
@@ -827,7 +827,7 @@
         });
 
         // --- EDUCATION LOGIC ---
-        const API_EDUCATION = 'https://portfoliokhai-production.up.railway.app';
+        const API_EDUCATION = 'https://portfoliokhai-production.up.railway.app/educations';
         let globalEducations = [];
 
         async function loadEducations() {
@@ -954,7 +954,7 @@
         //   if (tabId === 'certifications') loadCertifications();
 
         // --- CERTIFICATIONS LOGIC ---
-        const API_CERTIFICATIONS = 'https://portfoliokhai-production.up.railway.app';
+        const API_CERTIFICATIONS = 'https://portfoliokhai-production.up.railway.app/certifications';
         let globalCertifications = [];
 
         async function loadCertifications() {
