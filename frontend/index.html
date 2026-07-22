@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khashia Zahira Suharlan | AI Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        accent: '#F4E11B', /* New Custom Yellow */
+                        darkBg: '#0f172a',
+                        lightBg: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Experience timeline */
+        .exp-track {
+            position: relative;
+        }
+
+        .exp-track::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, rgba(59, 130, 246, 0.05));
+        }
+
+
+
+
+        .exp-thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            cursor: zoom-in;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .glass {
+            background: rgba(59, 130, 246, 0.10);
+            /* tint biru — light mode */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .dark .glass {
+            background: rgba(244, 225, 27, 0.08);
+            /* tint kuning — dark mode */
+            border: 1px solid rgba(244, 225, 27, 0.25);
+        }
+
+        /* ID card: warna & teks ikut mode */
+        .id-front,
+        .id-back {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .dark .id-front,
+        .dark .id-back {
+            background: rgba(244, 225, 27, 0.15);
+            border: 1px solid rgba(244, 225, 27, 0.4);
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .id-front *,
+        .id-back * {
+            color: inherit !important;
+        }
+
+
+        .id-card-wrapper {
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            width: 260px;
+            height: 380px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .lanyard-container:hover .id-card-wrapper {
+            transform: rotateY(180deg);
+        }
+
+        .id-front,
+        .id-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .id-back {
+            transform: rotateY(180deg);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bg-gradient-custom {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(234, 225, 27, 0.1), transparent 40%);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-lightBg text-slate-800 dark:bg-darkBg dark:text-slate-200 transition-colors duration-300 bg-gradient-custom min-h-screen">
+
+    <nav class="fixed w-full z-50 glass top-0">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="font-bold text-xl tracking-wider">KZS<span class="text-primary"></span></div>
+            <div class="flex gap-6 items-center">
+                <a href="#about" class="hover:text-primary transition">About</a>
+                <a href="#education" class="hover:text-primary transition">Education</a>
+                <a href="#experience" class="hover:text-primary transition">Experience</a>
+                <a href="#projects" class="hover:text-primary transition">Projects</a>
+                <a href="#certifications" class="hover:text-primary transition">Certifications</a>
+                <a href="#contact" class="hover:text-primary transition">Contact</a>
+
+                <button id="theme-toggle" class="text-accent hover:scale-110 transition transform">
+                    <i class="fas fa-sun text-xl" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="about" class="min-h-screen flex items-center justify-center pt-20">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row-reverse items-center gap-12">
+            <div class="fade-up w-full md:w-1/2 flex justify-center">
+                <div class="lanyard-container">
+                    <div class="lanyard-string"></div>
+                    <div class="id-card-wrapper">
+                        <!-- Front of ID Card -->
+                        <div
+                            class="id-front glass bg-white dark:bg-slate-800 flex flex-col items-center justify-center p-6 border-t-[6px] border-primary">
+                            <div class="w-32 h-32 rounded-full bg-gray-300 mb-5 overflow-hidden border-4 border-accent">
+                                <img id="card-avatar"
+                                    src="https://ui-avatars.com/api/?name=Khashia+Zahira&background=3b82f6&color=fff&size=256"
+                                    alt="Profile" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-bold text-xl text-center mb-1" id="card-name">Khashia Zahira</h3>
+                            <p class="text-[13px] font-semibold mb-4 text-center leading-tight" id="card-role">AI
+                                Engineer • Machine Learning • Data Science</p>
+                            <img id="card-qr"
+                                src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                                class="w-20 h-20 opacity-90 rounded-md" alt="QR Code">
+                        </div>
+                        <!-- Back of ID Card -->
+                        <div class="id-back glass flex flex-col items-center justify-center p-6">
+                            <i class="fas fa-microchip text-5xl mb-4 text-accent"></i>
+                            <h3 class="font-bold text-xl text-center">Access Granted</h3>
+                            <p class="text-sm text-center mt-3 opacity-90 leading-relaxed" id="card-tagline">Building
+                                healthcare-focused intelligent systems.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fade-up w-full md:w-1/2 text-center md:text-left">
+                <p class="text-primary font-medium tracking-wide uppercase mb-2">Hello, I am</p>
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4" id="hero-name">Khashia Zahira Suharlan</h1>
+                <h2 class="text-2xl md:text-3xl font-light text-slate-600 dark:text-slate-400 mb-6" id="hero-role">AI
+                    Engineer • Machine Learning • Data Science</h2>
+                <p class="mb-8 leading-relaxed max-w-lg mx-auto md:mx-0 text-lg" id="hero-tagline">
+                    I build intelligent systems focusing on machine learning, predictive modeling, and seamless
+                    integrations. Let's turn complex data into elegant solutions.
+                </p>
+                <a href="#projects"
+                    class="bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-full font-medium transition shadow-lg shadow-blue-500/30">
+                    View My Work
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section (Tampil di awal setelah Profile) -->
+    <section id="education" class="py-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-2 fade-up text-center">Educational <span
+                    class="text-primary">Background</span></h2>
+            <div class="w-16 h-1 bg-accent mx-auto mb-12 fade-up"></div>
+            <div id="education-grid" class="grid md:grid-cols-2 gap-8">
+                <!-- Rendered via JavaScript -->
+            </div>
+        </div>
+    </section>
+    <!-- Education Modal -->
+    <div id="education-modal"
+        class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300"
+            id="education-modal-content">
+            <div class="relative p-6 md:p-8 max-h-[85vh] overflow-y-auto">
+                <button onclick="closeEducationModal()"
+                    class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-red-500 hover:text-white transition z-10">
+                    &times;
+                </button>
+                <div id="edu-modal-image-container" class="mb-6 hidden">
+                    <img id="edu-modal-image" src="" alt=""
+                        class="w-full h-auto max-h-[400px] object-contain rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                </div>
+                <h3 class="text-2xl font-bold mb-1" id="edu-modal-institution"></h3>
+                <p class="text-primary font-semibold mb-1" id="edu-modal-degree"></p>
+                <p class="text-xs font-medium text-slate-500 mb-1" id="edu-modal-meta"></p>
+                <p class="text-xs font-bold text-accent uppercase mb-6" id="edu-modal-dates"></p>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6" id="edu-modal-overview"></p>
+
+                <div id="edu-modal-achievements-wrap" class="mb-6 hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-accent font-semibold mb-2">Academic Achievements
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300"
+                        id="edu-modal-achievements"></ul>
+                </div>
+
+                <div id="edu-modal-activities-wrap" class="mb-6 hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-primary font-semibold mb-2">Organizations &
+                        Activities</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300"
+                        id="edu-modal-activities"></ul>
+                </div>
+
+                <div id="edu-modal-courses-wrap" class="mb-6 hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Relevant Coursework
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="edu-modal-courses"></div>
+                </div>
+
+                <div id="edu-modal-skills-wrap" class="hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Skills Gained</h4>
+                    <div class="flex flex-wrap gap-2" id="edu-modal-skills"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-slate-900/40">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-2 fade-up text-center">Experiences <span class="text-primary"></span></h2>
+            <div class="w-16 h-1 bg-accent mx-auto mb-12 fade-up"></div>
+            <div id="experience-grid" class="exp-track flex flex-col gap-8 max-w-3xl mx-auto pl-14 relative"></div>
+        </div>
+    </section>
+
+    <!-- Experience Modal -->
+    <div id="experience-modal"
+        class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300"
+            id="experience-modal-content">
+            <div class="relative p-6 md:p-8 max-h-[85vh] overflow-y-auto">
+                <button onclick="closeExperienceModal()"
+                    class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-red-500 hover:text-white transition z-10">
+                    &times;
+                </button>
+                <div id="exp-modal-image-container" class="mb-6 hidden">
+                    <img id="exp-modal-image" src="" alt=""
+                        class="w-full h-auto max-h-[400px] object-contain rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                </div>
+                <h3 class="text-2xl font-bold mb-1" id="exp-modal-title"></h3>
+                <p class="text-primary font-semibold mb-1" id="exp-modal-company"></p>
+                <p class="text-xs font-medium text-slate-500 mb-1" id="exp-modal-meta"></p>
+                <p class="text-xs font-bold text-accent uppercase mb-6" id="exp-modal-dates"></p>
+
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6" id="exp-modal-responsibilities"></p>
+
+                <div id="exp-modal-achievements-wrap" class="mb-6 hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-accent font-semibold mb-2">Key Achievements</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300"
+                        id="exp-modal-achievements"></ul>
+                </div>
+
+                <div id="exp-modal-tech-wrap" class="hidden">
+                    <h4 class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Tech Stack</h4>
+                    <div class="flex flex-wrap gap-2" id="exp-modal-tech"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-2 fade-up text-center">Selected <span class="text-primary">Projects</span>
+            </h2>
+            <div class="w-16 h-1 bg-accent mx-auto mb-12 fade-up"></div>
+            <div id="projects-loading" class="text-center py-10 fade-up">
+                <i class="fas fa-spinner fa-spin text-3xl text-primary mb-3"></i>
+                <p>Fetching projects from database...</p>
+            </div>
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div id="project-modal"
+        class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300"
+            id="modal-content">
+            <div class="relative p-6 md:p-8 max-h-[85vh] overflow-y-auto custom-scrollbar">
+                <button onclick="closeModal()"
+                    class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-red-500 hover:text-white transition z-10">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div id="modal-image-container" class="mb-6 hidden">
+                    <img id="modal-image" src="" alt="Documentation"
+                        class="w-full h-auto max-h-[500px] object-contain rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                </div>
+                <div class="inline-block px-3 py-1 bg-accent/20 text-accent text-sm font-semibold rounded-full mb-3"
+                    id="modal-category">Category</div>
+                <h3 class="text-3xl font-bold mb-6" id="modal-title">Project Title</h3>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-semibold flex items-center gap-2 mb-2"><i
+                                class="fas fa-bullseye text-primary"></i> Background / Problem</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" id="modal-problem"></p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold flex items-center gap-2 mb-2"><i
+                                class="fas fa-lightbulb text-accent"></i> Solution & Contribution</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" id="modal-contribution"></p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold flex items-center gap-2 mb-2"><i
+                                class="fas fa-chart-line text-green-500"></i> Result & Documentation</h4>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" id="modal-result"></p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold mb-2 uppercase tracking-wider text-slate-500">Tech Stack</h4>
+                        <div class="flex flex-wrap gap-2" id="modal-tech"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-20 bg-slate-900/40">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-2 fade-up text-center">Licenses & <span
+                    class="text-primary">Certifications</span></h2>
+            <div class="w-16 h-1 bg-accent mx-auto mb-12 fade-up"></div>
+            <div id="certifications-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center fade-up">
+            <h2 class="text-3xl font-bold mb-6">Let's Connect</h2>
+            <p class="text-slate-400 mb-8 max-w-lg mx-auto">Open to discussions, collaborations, or opportunities.</p>
+            <div class="flex justify-center gap-6">
+                <a href="#" id="contact-linkedin" target="_blank"
+                    class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-primary transition hover:-translate-y-1"><i
+                        class="fab fa-linkedin-in text-xl"></i></a>
+                <a href="#" id="contact-instagram" target="_blank"
+                    class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-accent hover:text-black transition hover:-translate-y-1"><i
+                        class="fab fa-instagram text-xl"></i></a>
+                <a href="#" id="contact-email"
+                    class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-green-500 transition hover:-translate-y-1"><i
+                        class="fas fa-envelope text-xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Javascript Logic -->
+    <script>
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            }
+        });
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+        }, observerOptions);
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        const API_PROJECTS = 'http://127.0.0.1:8000/projects/';
+        const API_PROFILE = 'http://127.0.0.1:8000/profile/';
+        const API_EDUCATIONS = 'http://127.0.0.1:8000/educations/';
+        const API_EXPERIENCES = 'http://127.0.0.1:8000/experiences/';
+        const API_CERTIFICATIONS = 'http://127.0.0.1:8000/certifications/';
+        let globalProjects = [];
+
+        // --- Fetch Profile ---
+        async function fetchProfile() {
+            try {
+                const response = await fetch(API_PROFILE);
+                if (!response.ok) throw new Error("Failed to fetch profile");
+                const data = await response.json();
+
+                if (data.name) {
+                    document.getElementById('hero-name').innerText = data.name;
+                    document.getElementById('card-name').innerText = data.name.split(' ').slice(0, 2).join(' ');
+                }
+                if (data.role) {
+                    document.getElementById('hero-role').innerText = data.role;
+                    document.getElementById('card-role').innerText = data.role;
+                }
+                if (data.tagline) {
+                    document.getElementById('hero-tagline').innerText = data.tagline;
+                    document.getElementById('card-tagline').innerText = data.tagline;
+                }
+
+                if (data.photoUrl) document.getElementById('card-avatar').src = data.photoUrl;
+
+                if (data.linkedin) {
+                    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.linkedin)}`;
+                    document.getElementById('card-qr').src = qrUrl;
+                    document.getElementById('contact-linkedin').href = data.linkedin;
+                }
+                if (data.instagram) document.getElementById('contact-instagram').href = data.instagram;
+                if (data.email) document.getElementById('contact-email').href = `mailto:${data.email}`;
+
+            } catch (error) {
+                console.error("Error Fetching Profile:", error);
+            }
+        }
+
+        let globalEducations = [];
+
+        async function fetchEducations() {
+            try {
+                const eduRes = await fetch(API_EDUCATIONS);
+                if (!eduRes.ok) return;
+                globalEducations = await eduRes.json();
+                const eduGrid = document.getElementById('education-grid');
+                if (eduGrid && globalEducations.length > 0) {
+                    eduGrid.innerHTML = '';
+                    globalEducations.forEach((edu, index) => {
+                        const dateText = `${edu.startDate} - ${edu.currentStudent ? 'Present' : (edu.endDate || 'Present')}`;
+                        const card = document.createElement('div');
+                        card.className = "glass rounded-2xl p-5 fade-up visible cursor-pointer hover:-translate-y-1 hover:shadow-xl transition duration-300";
+                        card.onclick = () => openEducationModal(index);
+                        card.innerHTML = `
+                    <div class="flex justify-between items-start gap-3 mb-2">
+                        <h3 class="text-lg font-bold leading-tight">${edu.institution}</h3>
+                        <span class="text-xs font-bold text-accent uppercase bg-accent/10 px-3 py-1 rounded-full h-fit whitespace-nowrap">${dateText}</span>
+                    </div>
+                    <p class="text-primary font-semibold text-sm">${edu.degree}${edu.major ? ` • <span class="text-slate-600 dark:text-slate-300 font-normal">${edu.major}</span>` : ''}</p>
+                    <p class="text-xs font-medium text-slate-500 mt-2">
+                        ${edu.location || ''}${edu.location && edu.gpa ? ' · ' : ''}${edu.gpa ? `GPA: ${edu.gpa}` : ''}
+                    </p>
+                `;
+                        eduGrid.appendChild(card);
+                        if (typeof observer !== 'undefined') observer.observe(card);
+                    });
+                }
+            } catch (e) {
+                console.error("Error fetching education data:", e);
+            }
+        }
+
+        function openEducationModal(index) {
+            const edu = globalEducations[index];
+            if (!edu) return;
+
+            document.getElementById('edu-modal-institution').innerText = edu.institution;
+            document.getElementById('edu-modal-degree').innerText = `${edu.degree}${edu.major ? ' • ' + edu.major : ''}`;
+
+            let metaParts = [];
+            if (edu.location) metaParts.push(edu.location);
+            if (edu.gpa) metaParts.push(`GPA: ${edu.gpa}`);
+            document.getElementById('edu-modal-meta').innerText = metaParts.join(' · ');
+
+            document.getElementById('edu-modal-dates').innerText = `${edu.startDate} - ${edu.currentStudent ? 'Present' : (edu.endDate || 'Present')}`;
+            document.getElementById('edu-modal-overview').innerText = edu.overview || '';
+
+            const imgContainer = document.getElementById('edu-modal-image-container');
+            const imgEl = document.getElementById('edu-modal-image');
+            if (edu.imageUrl) { imgEl.src = edu.imageUrl; imgContainer.classList.remove('hidden'); }
+            else { imgContainer.classList.add('hidden'); }
+
+            const achWrap = document.getElementById('edu-modal-achievements-wrap');
+            if (edu.achievements) {
+                document.getElementById('edu-modal-achievements').innerHTML =
+                    edu.achievements.split(';').map(a => a.trim() ? `<li>${a.trim()}</li>` : '').join('');
+                achWrap.classList.remove('hidden');
+            } else { achWrap.classList.add('hidden'); }
+
+            const actWrap = document.getElementById('edu-modal-activities-wrap');
+            if (edu.activities) {
+                document.getElementById('edu-modal-activities').innerHTML =
+                    edu.activities.split(';').map(a => a.trim() ? `<li>${a.trim()}</li>` : '').join('');
+                actWrap.classList.remove('hidden');
+            } else { actWrap.classList.add('hidden'); }
+
+            const coursesWrap = document.getElementById('edu-modal-courses-wrap');
+            if (edu.courses && edu.courses.length > 0) {
+                document.getElementById('edu-modal-courses').innerHTML =
+                    edu.courses.map(c => `<span class="px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">${c}</span>`).join('');
+                coursesWrap.classList.remove('hidden');
+            } else { coursesWrap.classList.add('hidden'); }
+
+            const skillsWrap = document.getElementById('edu-modal-skills-wrap');
+            if (edu.skills && edu.skills.length > 0) {
+                document.getElementById('edu-modal-skills').innerHTML =
+                    edu.skills.map(s => `<span class="px-2 py-1 text-xs bg-accent/20 text-accent font-medium rounded-md">${s}</span>`).join('');
+                skillsWrap.classList.remove('hidden');
+            } else { skillsWrap.classList.add('hidden'); }
+
+            const modal = document.getElementById('education-modal');
+            const modalContent = document.getElementById('education-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEducationModal() {
+            const modal = document.getElementById('education-modal');
+            const modalContent = document.getElementById('education-modal-content');
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        document.getElementById('education-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'education-modal') closeEducationModal();
+        });
+
+        let globalExperiences = [];
+
+        async function fetchExperiences() {
+            try {
+                const expRes = await fetch(API_EXPERIENCES);
+                if (!expRes.ok) return;
+                const experiences = await expRes.json();
+                globalExperiences = experiences.filter(exp => exp.visible !== false);
+                const expGrid = document.getElementById('experience-grid');
+                if (!expGrid || globalExperiences.length === 0) return;
+
+                expGrid.innerHTML = '';
+                globalExperiences.forEach((exp, index) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = "relative fade-up visible";
+
+                    const node = document.createElement('span');
+                    node.className = "exp-node";
+                    wrapper.appendChild(node);
+
+                    const card = document.createElement('div');
+                    card.className = "glass rounded-2xl p-5 cursor-pointer hover:-translate-y-1 hover:shadow-xl transition duration-300";
+                    card.onclick = () => openExperienceModal(index);
+
+                    card.innerHTML = `
+                <div class="flex items-start justify-between gap-3 mb-1">
+                    <h3 class="text-lg font-bold leading-tight">${exp.title}</h3>
+                    <span class="text-xs font-bold text-accent uppercase bg-accent/10 px-3 py-1 rounded-full h-fit flex-shrink-0 whitespace-nowrap">
+                        ${exp.startDate} - ${exp.endDate || 'Present'}
+                    </span>
+                </div>
+                <p class="text-primary font-semibold text-sm">
+                    ${exp.company}
+                    <span class="text-slate-400 font-normal">• ${exp.employmentType}</span>
+                </p>
+                ${exp.location ? `<p class="text-xs font-medium text-slate-500 mt-1">${exp.location}</p>` : ''}
+            `;
+
+                    wrapper.appendChild(card);
+                    expGrid.appendChild(wrapper);
+                    if (typeof observer !== 'undefined') observer.observe(wrapper);
+                });
+            } catch (e) {
+                console.error("Error fetching experience data:", e);
+            }
+        }
+
+        function openExperienceModal(index) {
+            const exp = globalExperiences[index];
+            if (!exp) return;
+
+            document.getElementById('exp-modal-title').innerText = exp.title;
+            document.getElementById('exp-modal-company').innerText = `${exp.company} • ${exp.employmentType}`;
+            document.getElementById('exp-modal-meta').innerText = exp.location || '';
+            document.getElementById('exp-modal-dates').innerText = `${exp.startDate} - ${exp.endDate || 'Present'}`;
+            document.getElementById('exp-modal-responsibilities').innerText = exp.responsibilities || '';
+
+            const imgContainer = document.getElementById('exp-modal-image-container');
+            const imgEl = document.getElementById('exp-modal-image');
+            if (exp.imageUrl) { imgEl.src = exp.imageUrl; imgContainer.classList.remove('hidden'); }
+            else { imgContainer.classList.add('hidden'); }
+
+            const achWrap = document.getElementById('exp-modal-achievements-wrap');
+            if (exp.achievements) {
+                document.getElementById('exp-modal-achievements').innerHTML =
+                    exp.achievements.split(';').map(a => a.trim() ? `<li>${a.trim()}</li>` : '').join('');
+                achWrap.classList.remove('hidden');
+            } else { achWrap.classList.add('hidden'); }
+
+            const techWrap = document.getElementById('exp-modal-tech-wrap');
+            if (exp.techStack && exp.techStack.length > 0) {
+                document.getElementById('exp-modal-tech').innerHTML =
+                    exp.techStack.map(t => `<span class="px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">${t}</span>`).join('');
+                techWrap.classList.remove('hidden');
+            } else { techWrap.classList.add('hidden'); }
+
+            const modal = document.getElementById('experience-modal');
+            const modalContent = document.getElementById('experience-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeExperienceModal() {
+            const modal = document.getElementById('experience-modal');
+            const modalContent = document.getElementById('experience-modal-content');
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        document.getElementById('experience-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'experience-modal') closeExperienceModal();
+        });
+
+        // --- Fetch Projects ---
+        async function fetchProjects() {
+            try {
+                const response = await fetch(API_PROJECTS);
+                if (!response.ok) throw new Error("Failed to fetch projects");
+                const projects = await response.json();
+                globalProjects = projects;
+                renderProjects(projects);
+                document.getElementById('projects-loading').style.display = 'none';
+            } catch (error) {
+                document.getElementById('projects-loading').innerHTML = `<div class="text-red-500">Make sure the backend is running.</div>`;
+            }
+        }
+
+        // --- Fetch Certifications ---
+        async function fetchCertifications() {
+            try {
+                const res = await fetch(API_CERTIFICATIONS);
+                if (!res.ok) return;
+                const certifications = await res.json();
+                const grid = document.getElementById('certifications-grid');
+                const visibleCerts = certifications.filter(c => c.visible !== false);
+                if (!grid || visibleCerts.length === 0) return;
+
+                grid.innerHTML = '';
+                visibleCerts.forEach(cert => {
+                    const card = document.createElement('a');
+                    card.href = cert.url || '#';
+                    if (cert.url) card.target = '_blank';
+                    card.className = "glass rounded-2xl p-5 flex gap-4 items-center fade-up visible hover:-translate-y-1 hover:shadow-xl transition duration-300 group";
+
+                    const thumb = cert.imageUrl
+                        ? `<img src="${cert.imageUrl}" alt="${cert.title}" class="w-16 h-16 rounded-xl object-cover border border-slate-200 dark:border-slate-700 flex-shrink-0">`
+                        : `<div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0"><i class="fas fa-certificate text-2xl text-primary"></i></div>`;
+
+                    card.innerHTML = `
+                    ${thumb}
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-sm leading-snug line-clamp-2">${cert.title}</h3>
+                        <p class="text-primary text-xs font-semibold mt-1">${cert.issuer}</p>
+                        <p class="text-slate-400 text-xs mt-0.5">${cert.date}</p>
+                    </div>
+                    ${cert.url ? '<i class="fas fa-arrow-up-right-from-square text-slate-300 group-hover:text-accent transition ml-auto flex-shrink-0"></i>' : ''}
+                `;
+                    grid.appendChild(card);
+                    if (typeof observer !== 'undefined') observer.observe(card);
+                });
+            } catch (e) {
+                console.error("Error fetching certifications:", e);
+            }
+        }
+
+        function renderProjects(projects) {
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            projects.forEach((proj) => {
+                const card = document.createElement('div');
+                card.className = "glass rounded-2xl p-6 hover:shadow-xl hover:-translate-y-2 transition duration-300 cursor-pointer fade-up flex flex-col";
+                card.onclick = () => openModal(proj);
+                const imageTag = proj.imageUrl ? `<img src="${proj.imageUrl}" alt="${proj.title}" class="w-full h-48 object-cover rounded-xl mb-4 border border-slate-200 dark:border-slate-700">` : '';
+                card.innerHTML = `
+                    ${imageTag}
+                    <span class="text-xs font-bold text-accent tracking-widest uppercase mb-2 block">${proj.category}</span>
+                    <h3 class="text-xl font-bold mb-3">${proj.title}</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">${proj.problem}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        ${proj.techStack ? proj.techStack.slice(0, 3).map(tech => `<span class="px-2 py-1 text-xs bg-primary/10 text-primary rounded-md">${tech}</span>`).join('') : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+                observer.observe(card);
+            });
+        }
+
+        const modal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal(project) {
+            document.getElementById('modal-title').innerText = project.title;
+            document.getElementById('modal-category').innerText = project.category;
+            document.getElementById('modal-problem').innerText = project.problem;
+            document.getElementById('modal-contribution').innerText = project.contribution;
+            document.getElementById('modal-result').innerText = project.result;
+
+            const modalImageContainer = document.getElementById('modal-image-container');
+            const modalImage = document.getElementById('modal-image');
+            if (project.imageUrl) { modalImage.src = project.imageUrl; modalImageContainer.classList.remove('hidden'); }
+            else { modalImageContainer.classList.add('hidden'); }
+
+            document.getElementById('modal-tech').innerHTML = project.techStack ? project.techStack.map(tech => `<span class="px-3 py-1 text-sm bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">${tech}</span>`).join('') : '-';
+
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0'); modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // --- Single Unified DOM Load Execution ---
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchProfile();
+            fetchEducations();
+            fetchExperiences();
+            fetchProjects();
+            fetchCertifications();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Portfolio Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col h-full shadow-sm z-10">
+        <div class="p-6 border-b border-slate-100">
+            <h1 class="text-2xl font-bold text-slate-900">Portfolio<span class="text-blue-600">CMS</span></h1>
+        </div>
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">Content Manager</p>
+            <button onclick="switchTab('profile')" id="nav-profile"
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+                <i class="fas fa-user w-5 text-center"></i> Profile Info
+            </button>
+            <button onclick="switchTab('projects')" id="nav-projects"
+                class="nav-btn active w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl bg-blue-50 text-blue-700 transition">
+                <i class="fas fa-rocket w-5 text-center"></i> Selected Projects
+            </button>
+            <button onclick="switchTab('experience')" id="nav-experience"
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+                <i class="fas fa-briefcase w-5 text-center"></i> Experience
+            </button>
+            <button onclick="switchTab('education')" id="nav-education"
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+                <i class="fas fa-graduation-cap w-5 text-center"></i> Education
+            </button>
+
+            <button onclick="switchTab('certifications')" id="nav-certifications"
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition">
+                <i class="fas fa-certificate w-5 text-center"></i> Certifications
+            </button>
+
+        </nav>
+        <div class="p-4 border-t border-slate-100">
+            <a href="index.html" target="_blank"
+                class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-medium transition flex items-center justify-center gap-2">
+                <i class="fas fa-external-link-alt"></i> Preview Web
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto relative">
+        <div id="toast"
+            class="fixed top-6 right-6 z-50 hidden px-6 py-4 rounded-xl shadow-lg font-medium transition-all"></div>
+
+        <div class="max-w-5xl mx-auto p-6 md:p-10">
+
+            <!-- TAB: PROFILE SETTINGS -->
+            <section id="tab-profile" class="tab-content">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900">Profile Settings</h2>
+                    <p class="text-slate-500 mt-1">Manage hero section information and ID Card photo.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                    <form id="profileForm" class="space-y-6">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <label class="block text-sm font-semibold mb-2">Profile Photo (ID Card Avatar)</label>
+                            <div class="flex items-center gap-4">
+                                <img id="prof-image-preview"
+                                    src="https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=fff"
+                                    class="w-16 h-16 rounded-full object-cover border-2 border-slate-300">
+                                <input type="file" id="prof-imageFile" accept="image/*"
+                                    class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 bg-white">
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2">Select a new file to replace the current photo.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Full Name</label><input type="text"
+                                    id="prof-name" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">Current Role</label><input type="text"
+                                    id="prof-role" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    placeholder="AI Engineer • Machine Learning"></div>
+                        </div>
+
+                        <div><label class="block text-sm font-semibold mb-2">Tagline (Hero Section)</label><input
+                                type="text" id="prof-tagline" required
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Email</label><input type="email"
+                                    id="prof-email"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">Location</label><input type="text"
+                                    id="prof-location"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">LinkedIn URL</label><input type="url"
+                                    id="prof-linkedin"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">Instagram URL</label><input type="url"
+                                    id="prof-instagram"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">GitHub URL</label><input type="url"
+                                    id="prof-github"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-4 border-t border-slate-100">
+                            <button type="submit" id="profileSubmitBtn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                                <i class="fas fa-save"></i> Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB: PROJECTS -->
+            <section id="tab-projects" class="tab-content active">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900">Manage Projects</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Project List</h3>
+                        <button onclick="resetProjectForm()"
+                            class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 text-sm">
+                            + Add New
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-sm text-slate-500">
+                                    <th class="py-3 px-4">Project Title</th>
+                                    <th class="py-3 px-4">Role</th>
+                                    <th class="py-3 px-4 w-24">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="project-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8"
+                    id="project-form-container">
+                    <h3 class="text-xl font-bold mb-6" id="form-title">Add New Project</h3>
+                    <form id="projectForm" class="space-y-6">
+                        <input type="hidden" id="editProjectId" value="">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Project Title</label><input type="text"
+                                    id="title" required class="w-full px-4 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm font-semibold mb-2">Role</label><input type="text"
+                                    id="category" required class="w-full px-4 py-2 border rounded-lg"></div>
+                        </div>
+                        <div><label class="block text-sm font-semibold mb-2">Background / Problem</label><textarea
+                                id="problem" rows="2" required class="w-full px-4 py-2 border rounded-lg"></textarea>
+                        </div>
+                        <div><label class="block text-sm font-semibold mb-2">Solution & Contribution</label><textarea
+                                id="contribution" rows="2" required
+                                class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+                        <div><label class="block text-sm font-semibold mb-2">Result & Impact</label><textarea
+                                id="result" rows="2" required class="w-full px-4 py-2 border rounded-lg"></textarea>
+                        </div>
+                        <div><label class="block text-sm font-semibold mb-2">Tech Stack (Comma Separated)</label><input
+                                type="text" id="techStack" required class="w-full px-4 py-2 border rounded-lg"></div>
+
+                        <div class="p-4 bg-slate-50 border rounded-xl space-y-4">
+                            <div><label class="block text-sm font-medium mb-2">Upload Image</label><input type="file"
+                                    id="imageFile" accept="image/*" class="w-full text-sm border rounded-lg bg-white">
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium">Live URL</label><input type="url"
+                                        id="liveUrl" class="w-full px-4 py-2 border rounded-lg"></div>
+                                <div><label class="block text-sm font-medium">Case Study URL</label><input type="url"
+                                        id="caseStudyUrl" class="w-full px-4 py-2 border rounded-lg"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 py-2">
+                            <label><input type="checkbox" id="featured"> Featured</label>
+                            <label><input type="checkbox" id="visible" checked> Visible</label>
+                        </div>
+
+                        <div class="flex justify-end pt-2 border-t">
+                            <button type="submit" id="submitBtn"
+                                class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2">
+                                <i class="fas fa-save"></i> Save Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB: EXPERIENCE -->
+            <section id="tab-experience" class="tab-content">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900">Manage Experience</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Experience List</h3>
+                        <button onclick="resetExperienceForm()"
+                            class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 text-sm">
+                            + Add New
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-sm text-slate-500">
+                                    <th class="py-3 px-4">Role / Job Title</th>
+                                    <th class="py-3 px-4">Company</th>
+                                    <th class="py-3 px-4 w-24">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="experience-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Updated Form Matching the Database Schema -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8"
+                    id="experience-form-container">
+                    <h3 class="text-xl font-bold mb-6" id="exp-form-title">Add New Experience</h3>
+                    <form id="experienceForm" class="space-y-6">
+                        <input type="hidden" id="editExperienceId" value="">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Job Title / Role</label><input
+                                    type="text" id="exp-title" required class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">Company / Organization</label><input
+                                    type="text" id="exp-company" required class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Employment Type</label>
+                                <select id="exp-type" class="w-full px-4 py-2 border rounded-lg">
+                                    <option value="Internship">Internship</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Contract">Contract</option>
+                                    <option value="Freelance">Freelance</option>
+                                    <option value="Leadership">Leadership</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                </select>
+                            </div>
+                            <div><label class="block text-sm font-semibold mb-2">Location</label><input type="text"
+                                    id="exp-location" placeholder="Remote, Jakarta..."
+                                    class="w-full px-4 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm font-semibold mb-2">Tech Stack / Key Skills
+                                    (Comma)</label><input type="text" id="exp-tech"
+                                    class="w-full px-4 py-2 border rounded-lg"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label class="block text-sm font-semibold mb-2">Start Date</label><input type="text"
+                                    id="exp-start" placeholder="e.g., Aug 2025" required
+                                    class="w-full px-4 py-2 border rounded-lg"></div>
+                            <div><label class="block text-sm font-semibold mb-2">End Date</label><input type="text"
+                                    id="exp-end" placeholder="e.g., Present" class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                        </div>
+
+                        <div><label class="block text-sm font-semibold mb-2">Role Responsibilities</label><textarea
+                                id="exp-responsibilities" rows="2"
+                                class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+                        <div><label class="block text-sm font-semibold mb-2">Key Achievements / Impact (Bullets
+                                separated by semi-colon ';')</label><textarea id="exp-achievements" rows="3"
+                                class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+
+                        <div class="p-4 bg-slate-50 border rounded-xl space-y-4">
+                            <div><label class="block text-sm font-medium mb-2">Proof of Work (Image
+                                    Upload)</label><input type="file" id="exp-imageFile" accept="image/*"
+                                    class="w-full text-sm border rounded-lg bg-white"></div>
+                        </div>
+
+                        <div class="flex justify-end pt-2 border-t">
+                            <!-- Ubah dari <button type="button" onclick="alert(...)"> menjadi seperti ini: -->
+                            <button type="submit" id="expSubmitBtn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                                <i class="fas fa-save"></i> Save Experience
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+            <!-- TAB: EDUCATION -->
+            <section id="tab-education" class="tab-content">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900">Manage Education</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Education List</h3>
+                        <button onclick="resetEducationForm()"
+                            class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 text-sm">
+                            + Add New
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-sm text-slate-500">
+                                    <th class="py-3 px-4">Institution</th>
+                                    <th class="py-3 px-4">Degree & Major</th>
+                                    <th class="py-3 px-4 w-24">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="education-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8"
+                    id="education-form-container">
+                    <h3 class="text-xl font-bold mb-6" id="edu-form-title">Add New Education</h3>
+                    <form id="educationForm" class="space-y-6">
+                        <input type="hidden" id="editEducationId" value="">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Institution</label>
+                                <input type="text" id="edu-institution" required
+                                    class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Degree</label>
+                                <input type="text" id="edu-degree" required class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="e.g., Bachelor of Information Technology">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Major / Concentration</label>
+                                <input type="text" id="edu-major" class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="e.g., AI in Healthcare">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Location</label>
+                                <input type="text" id="edu-location" placeholder="Cikarang, Indonesia"
+                                    class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Start Date</label>
+                                <input type="text" id="edu-start" required class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">End Date</label>
+                                <input type="text" id="edu-end" class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div class="flex items-center gap-2 pb-3">
+                                <input type="checkbox" id="edu-current" class="w-4 h-4">
+                                <label for="edu-current" class="text-sm font-medium">Currently studying here</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">GPA</label>
+                            <input type="text" id="edu-gpa" class="w-full px-4 py-2 border rounded-lg"
+                                placeholder="e.g., 3.8/4.0">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Overview</label>
+                            <textarea id="edu-overview" rows="2" class="w-full px-4 py-2 border rounded-lg"
+                                placeholder="Short summary about this program"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Relevant Coursework (Comma
+                                Separated)</label>
+                            <input type="text" id="edu-courses" class="w-full px-4 py-2 border rounded-lg"
+                                placeholder="Machine Learning, Data Structures, ...">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Academic Achievements (Bullets separated
+                                by ';')</label>
+                            <textarea id="edu-achievements" rows="3"
+                                class="w-full px-4 py-2 border rounded-lg"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Organizations & Activities (Bullets
+                                separated by
+                                ';')</label>
+                            <textarea id="edu-activities" rows="3"
+                                class="w-full px-4 py-2 border rounded-lg"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Skills Gained (Comma Separated)</label>
+                            <input type="text" id="edu-skills" class="w-full px-4 py-2 border rounded-lg"
+                                placeholder="Python, TensorFlow, ...">
+                        </div>
+
+                        <div class="p-4 bg-slate-50 border rounded-xl space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Proof of Education (Image
+                                    Upload)</label>
+                                <input type="file" id="edu-imageFile" accept="image/*"
+                                    class="w-full text-sm border rounded-lg bg-white">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-2 border-t">
+                            <button type="submit" id="eduSubmitBtn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                                <i class="fas fa-save"></i> Save Education
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB: CERTIFICATIONS -->
+
+            <section id="tab-certifications" class="tab-content">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900">Manage Certifications</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Certification List</h3>
+                        <button onclick="resetCertificationForm()"
+                            class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 text-sm">
+                            + Add New
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-sm text-slate-500">
+                                    <th class="py-3 px-4">Title</th>
+                                    <th class="py-3 px-4">Issuer</th>
+                                    <th class="py-3 px-4 w-24">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certification-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8"
+                    id="certification-form-container">
+                    <h3 class="text-xl font-bold mb-6" id="cert-form-title">Add New Certification</h3>
+                    <form id="certificationForm" class="space-y-6">
+                        <input type="hidden" id="editCertificationId" value="">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Certificate Title</label>
+                                <input type="text" id="cert-title" required class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="e.g., Belajar Machine Learning untuk Pemula">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Issuer</label>
+                                <input type="text" id="cert-issuer" required class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="e.g., Dicoding, DBS Foundation">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Date Issued</label>
+                                <input type="text" id="cert-date" required class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="e.g., Jul 2026">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Credential URL</label>
+                                <input type="url" id="cert-url" class="w-full px-4 py-2 border rounded-lg"
+                                    placeholder="Link ke sertifikat / credential">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 border rounded-xl space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Certificate Image</label>
+                                <input type="file" id="cert-imageFile" accept="image/*"
+                                    class="w-full text-sm border rounded-lg bg-white">
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 py-2">
+                            <label><input type="checkbox" id="cert-visible" checked> Visible</label>
+                        </div>
+
+                        <div class="flex justify-end pt-2 border-t">
+                            <button type="submit" id="certSubmitBtn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                                <i class="fas fa-save"></i> Save Certification
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+        </div>
+    </main>
+
+    <script>
+        const API_PROJECTS = 'http://127.0.0.1:8000/projects/';
+        const API_PROFILE = 'http://127.0.0.1:8000/profile/';
+        const UPLOAD_URL = 'http://127.0.0.1:8000/upload/';
+        let globalProjects = [];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('bg-blue-50', 'text-blue-700'); b.classList.add('text-slate-600'); });
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`nav-${tabId}`).classList.add('bg-blue-50', 'text-blue-700');
+            if (tabId === 'profile') loadProfileData();
+            if (tabId === 'projects') loadProjects();
+            if (tabId === 'experience') loadExperiences();
+            if (tabId === 'education') loadEducations();
+        }
+
+        function showToast(msg, isErr = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = `fixed top-6 right-6 z-50 px-6 py-4 rounded-xl shadow-lg font-medium block ${isErr ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`;
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        let currentProfilePhotoUrl = null;
+        async function loadProfileData() {
+            try {
+                const res = await fetch(API_PROFILE);
+                if (!res.ok) return;
+                const data = await res.json();
+                document.getElementById('prof-name').value = data.name || '';
+                document.getElementById('prof-role').value = data.role || '';
+                document.getElementById('prof-tagline').value = data.tagline || '';
+                document.getElementById('prof-email').value = data.email || '';
+                document.getElementById('prof-location').value = data.location || '';
+                document.getElementById('prof-linkedin').value = data.linkedin || '';
+                document.getElementById('prof-instagram').value = data.instagram || '';
+                document.getElementById('prof-github').value = data.github || '';
+                currentProfilePhotoUrl = data.photoUrl || null;
+                if (currentProfilePhotoUrl) document.getElementById('prof-image-preview').src = currentProfilePhotoUrl;
+            } catch (e) { console.error(e); }
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('profileSubmitBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                let finalPhotoUrl = currentProfilePhotoUrl;
+                const imageInput = document.getElementById('prof-imageFile');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append("file", imageInput.files[0]);
+                    const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: formData });
+                    finalPhotoUrl = (await uploadRes.json()).imageUrl;
+                    document.getElementById('prof-image-preview').src = finalPhotoUrl;
+                }
+
+                const payload = {
+                    name: document.getElementById('prof-name').value, role: document.getElementById('prof-role').value,
+                    tagline: document.getElementById('prof-tagline').value, email: document.getElementById('prof-email').value,
+                    location: document.getElementById('prof-location').value, linkedin: document.getElementById('prof-linkedin').value,
+                    instagram: document.getElementById('prof-instagram').value, github: document.getElementById('prof-github').value,
+                    photoUrl: finalPhotoUrl
+                };
+
+                await fetch(API_PROFILE, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                showToast("Profile updated successfully!");
+            } catch (e) { showToast(e.message, true); }
+            finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Profile'; btn.disabled = false; }
+        });
+
+        // Load Projects logic (omitted unchanged functions for brevity but they remain active)
+        async function loadProjects() {
+            try {
+                const res = await fetch(API_PROJECTS);
+                globalProjects = await res.json();
+                const tbody = document.getElementById('project-table-body');
+                tbody.innerHTML = globalProjects.map(p => `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                        <td class="py-3 px-4 font-semibold">${p.title}</td>
+                        <td class="py-3 px-4 text-slate-500">${p.category}</td>
+                        <td class="py-3 px-4 flex gap-2">
+                            <button onclick="editProject('${p.id}')" class="bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteProject('${p.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        async function deleteProject(id) {
+            if (!confirm("Are you sure you want to delete this project?")) return;
+            try { await fetch(API_PROJECTS + id, { method: 'DELETE' }); showToast("Project deleted!"); loadProjects(); }
+            catch (e) { showToast("Failed to delete!", true); }
+        }
+
+        function editProject(id) {
+            const p = globalProjects.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('form-title').innerText = `Edit: ${p.title}`;
+            document.getElementById('editProjectId').value = p.id;
+            document.getElementById('title').value = p.title; document.getElementById('category').value = p.category;
+            document.getElementById('problem').value = p.problem; document.getElementById('contribution').value = p.contribution;
+            document.getElementById('result').value = p.result; document.getElementById('techStack').value = p.techStack ? p.techStack.join(', ') : '';
+            document.getElementById('liveUrl').value = p.liveUrl || ''; document.getElementById('caseStudyUrl').value = p.caseStudyUrl || '';
+            document.getElementById('featured').checked = p.featured; document.getElementById('visible').checked = p.visible;
+            document.getElementById('project-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetProjectForm() {
+            document.getElementById('projectForm').reset();
+            document.getElementById('editProjectId').value = "";
+            document.getElementById('form-title').innerText = "Add New Project";
+        }
+
+        document.getElementById('projectForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Processing..."; submitBtn.disabled = true;
+
+            try {
+                let finalImageUrl = null;
+                const imageInput = document.getElementById('imageFile');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData(); formData.append("file", imageInput.files[0]);
+                    const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: formData });
+                    finalImageUrl = (await uploadRes.json()).imageUrl;
+                }
+
+                const techArray = document.getElementById('techStack').value.split(',').map(i => i.trim()).filter(i => i);
+                const payload = {
+                    title: document.getElementById('title').value, category: document.getElementById('category').value,
+                    problem: document.getElementById('problem').value, contribution: document.getElementById('contribution').value,
+                    result: document.getElementById('result').value, techStack: techArray,
+                    liveUrl: document.getElementById('liveUrl').value || null, caseStudyUrl: document.getElementById('caseStudyUrl').value || null,
+                    featured: document.getElementById('featured').checked, visible: document.getElementById('visible').checked
+                };
+                if (finalImageUrl) payload.imageUrl = finalImageUrl;
+
+                const editId = document.getElementById('editProjectId').value;
+                const endpoint = editId ? API_PROJECTS + editId : API_PROJECTS;
+                await fetch(endpoint, { method: editId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+                showToast(editId ? "Project updated!" : "Project added!");
+                resetProjectForm(); loadProjects();
+            } catch (e) { showToast(e.message, true); }
+            finally { submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Project'; submitBtn.disabled = false; }
+        });
+
+        window.addEventListener('DOMContentLoaded', loadProjects);
+
+
+        // --- EXPERIENCE LOGIC ---
+        const API_EXPERIENCE = 'http://127.0.0.1:8000/experiences/';
+        let globalExperiences = [];
+
+        async function loadExperiences() {
+            try {
+                const res = await fetch(API_EXPERIENCE);
+                globalExperiences = await res.json();
+                const tbody = document.getElementById('experience-table-body');
+                tbody.innerHTML = globalExperiences.map(ex => `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                        <td class="py-3 px-4 font-semibold">${ex.title}</td>
+                        <td class="py-3 px-4 text-slate-500">${ex.company}</td>
+                        <td class="py-3 px-4 flex gap-2">
+                            <button onclick="editExperience('${ex.id}')" class="bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteExperience('${ex.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        function resetExperienceForm() {
+            document.getElementById('experienceForm').reset();
+            document.getElementById('editExperienceId').value = "";
+            document.getElementById('exp-form-title').innerText = "Add New Experience";
+        }
+
+        function editExperience(id) {
+            const ex = globalExperiences.find(x => x.id === id);
+            if (!ex) return;
+            document.getElementById('exp-form-title').innerText = `Edit: ${ex.title}`;
+            document.getElementById('editExperienceId').value = ex.id;
+            document.getElementById('exp-title').value = ex.title || '';
+            document.getElementById('exp-company').value = ex.company || '';
+            document.getElementById('exp-type').value = ex.employmentType || 'Full-time';
+            document.getElementById('exp-location').value = ex.location || '';
+            document.getElementById('exp-tech').value = ex.techStack ? ex.techStack.join(', ') : '';
+            document.getElementById('exp-start').value = ex.startDate || '';
+            document.getElementById('exp-end').value = ex.endDate || '';
+            document.getElementById('exp-responsibilities').value = ex.responsibilities || '';
+            document.getElementById('exp-achievements').value = ex.achievements || '';
+            document.getElementById('experience-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteExperience(id) {
+            if (!confirm("Are you sure you want to delete this experience?")) return;
+            try {
+                await fetch(API_EXPERIENCE + id, { method: 'DELETE' });
+                showToast("Experience deleted!");
+                loadExperiences();
+            } catch (e) { showToast("Failed to delete!", true); }
+        }
+
+        document.getElementById('experienceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('expSubmitBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                const editId = document.getElementById('editExperienceId').value;
+                const existingExp = editId ? globalExperiences.find(x => x.id === editId) : null;
+                let finalImageUrl = existingExp ? existingExp.imageUrl : null;
+
+                const imageInput = document.getElementById('exp-imageFile');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append("file", imageInput.files[0]);
+                    const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: formData });
+                    finalImageUrl = (await uploadRes.json()).imageUrl;
+                }
+
+                const techString = document.getElementById('exp-tech').value;
+                const techArray = techString ? techString.split(',').map(i => i.trim()).filter(i => i) : [];
+                const achievementsText = document.getElementById('exp-achievements').value;
+
+                const payload = {
+                    title: document.getElementById('exp-title').value,
+                    company: document.getElementById('exp-company').value,
+                    employmentType: document.getElementById('exp-type').value,
+                    location: document.getElementById('exp-location').value || null,
+                    startDate: document.getElementById('exp-start').value,
+                    endDate: document.getElementById('exp-end').value || null,
+                    responsibilities: document.getElementById('exp-responsibilities').value || null,
+                    achievements: achievementsText || null,
+                    techStack: techArray,
+                    imageUrl: finalImageUrl,
+                    visible: true
+                };
+
+                const endpoint = editId ? API_EXPERIENCE + editId : API_EXPERIENCE;
+                const res = await fetch(endpoint, {
+                    method: editId ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Failed to save experience");
+                showToast(editId ? "Experience updated successfully!" : "Experience saved successfully!");
+                resetExperienceForm();
+                loadExperiences();
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Experience';
+                btn.disabled = false;
+            }
+        });
+
+        // --- EDUCATION LOGIC ---
+        const API_EDUCATION = 'http://127.0.0.1:8000/educations/';
+        let globalEducations = [];
+
+        async function loadEducations() {
+            try {
+                const res = await fetch(API_EDUCATION);
+                globalEducations = await res.json();
+                const tbody = document.getElementById('education-table-body');
+                tbody.innerHTML = globalEducations.map(ed => `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                        <td class="py-3 px-4 font-semibold">${ed.institution}</td>
+                        <td class="py-3 px-4 text-slate-500">${ed.degree}${ed.major ? ` • ${ed.major}` : ''}</td>
+                        <td class="py-3 px-4 flex gap-2">
+                            <button onclick="editEducation('${ed.id}')" class="bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteEducation('${ed.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        function resetEducationForm() {
+            document.getElementById('educationForm').reset();
+            document.getElementById('editEducationId').value = "";
+            document.getElementById('edu-form-title').innerText = "Add New Education";
+        }
+
+        function editEducation(id) {
+            const ed = globalEducations.find(x => x.id === id);
+            if (!ed) return;
+            document.getElementById('edu-form-title').innerText = `Edit: ${ed.institution}`;
+            document.getElementById('editEducationId').value = ed.id;
+            document.getElementById('edu-institution').value = ed.institution || '';
+            document.getElementById('edu-degree').value = ed.degree || '';
+            document.getElementById('edu-major').value = ed.major || '';
+            document.getElementById('edu-location').value = ed.location || '';
+            document.getElementById('edu-start').value = ed.startDate || '';
+            document.getElementById('edu-end').value = ed.endDate || '';
+            document.getElementById('edu-current').checked = !!ed.currentStudent;
+            document.getElementById('edu-gpa').value = ed.gpa || '';
+            document.getElementById('edu-courses').value = ed.courses ? ed.courses.join(', ') : '';
+            document.getElementById('edu-overview').value = ed.overview || '';
+            document.getElementById('edu-achievements').value = ed.achievements || '';
+            document.getElementById('edu-activities').value = ed.activities || '';
+            document.getElementById('edu-skills').value = ed.skills ? ed.skills.join(', ') : '';
+            document.getElementById('education-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteEducation(id) {
+            if (!confirm("Are you sure you want to delete this education record?")) return;
+            try {
+                await fetch(API_EDUCATION + id, { method: 'DELETE' });
+                showToast("Education record deleted!");
+                loadEducations();
+            } catch (e) { showToast("Failed to delete!", true); }
+        }
+
+        document.getElementById('educationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('eduSubmitBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                const editId = document.getElementById('editEducationId').value;
+                const existingEdu = editId ? globalEducations.find(x => x.id === editId) : null;
+                let finalImageUrl = existingEdu ? existingEdu.imageUrl : null;
+
+                const imageInput = document.getElementById('edu-imageFile');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append("file", imageInput.files[0]);
+                    const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: formData });
+                    finalImageUrl = (await uploadRes.json()).imageUrl;
+                }
+
+                const coursesString = document.getElementById('edu-courses').value;
+                const coursesArray = coursesString ? coursesString.split(',').map(i => i.trim()).filter(i => i) : [];
+
+                const skillsString = document.getElementById('edu-skills').value;
+                const skillsArray = skillsString ? skillsString.split(',').map(i => i.trim()).filter(i => i) : [];
+
+                const payload = {
+                    institution: document.getElementById('edu-institution').value,
+                    degree: document.getElementById('edu-degree').value,
+                    major: document.getElementById('edu-major').value || null,
+                    location: document.getElementById('edu-location').value || null,
+                    startDate: document.getElementById('edu-start').value,
+                    endDate: document.getElementById('edu-end').value || null,
+                    currentStudent: document.getElementById('edu-current').checked,
+                    gpa: document.getElementById('edu-gpa').value || null,
+                    overview: document.getElementById('edu-overview').value || null,
+                    courses: coursesArray,
+                    achievements: document.getElementById('edu-achievements').value || null,
+                    activities: document.getElementById('edu-activities').value || null,
+                    skills: skillsArray,
+                    imageUrl: finalImageUrl
+                };
+
+                const endpoint = editId ? API_EDUCATION + editId : API_EDUCATION;
+                const res = await fetch(endpoint, {
+                    method: editId ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Failed to save education record");
+                showToast(editId ? "Education updated successfully!" : "Education saved successfully!");
+                resetEducationForm();
+                loadEducations();
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Education';
+                btn.disabled = false;
+            }
+        });
+
+
+
+        // Di dalam function switchTab(tabId) yang SUDAH ADA, tambah baris ini
+        // di antara baris "if (tabId === 'education') loadEducations();" dan
+        // penutup function-nya:
+        //
+        //   if (tabId === 'certifications') loadCertifications();
+
+        // --- CERTIFICATIONS LOGIC ---
+        const API_CERTIFICATIONS = 'http://127.0.0.1:8000/certifications/';
+        let globalCertifications = [];
+
+        async function loadCertifications() {
+            try {
+                const res = await fetch(API_CERTIFICATIONS);
+                globalCertifications = await res.json();
+                const tbody = document.getElementById('certification-table-body');
+                tbody.innerHTML = globalCertifications.map(c => `
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="py-3 px-4 font-semibold">${c.title}</td>
+                    <td class="py-3 px-4 text-slate-500">${c.issuer}</td>
+                    <td class="py-3 px-4 flex gap-2">
+                        <button onclick="editCertification('${c.id}')" class="bg-blue-100 text-blue-600 px-2 py-1 rounded hover:bg-blue-200"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteCertification('${c.id}')" class="bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        function resetCertificationForm() {
+            document.getElementById('certificationForm').reset();
+            document.getElementById('editCertificationId').value = "";
+            document.getElementById('cert-form-title').innerText = "Add New Certification";
+            document.getElementById('cert-visible').checked = true;
+        }
+
+        function editCertification(id) {
+            const c = globalCertifications.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById('cert-form-title').innerText = `Edit: ${c.title}`;
+            document.getElementById('editCertificationId').value = c.id;
+            document.getElementById('cert-title').value = c.title || '';
+            document.getElementById('cert-issuer').value = c.issuer || '';
+            document.getElementById('cert-date').value = c.date || '';
+            document.getElementById('cert-url').value = c.url || '';
+            document.getElementById('cert-visible').checked = c.visible !== false;
+            document.getElementById('certification-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function deleteCertification(id) {
+            if (!confirm("Are you sure you want to delete this certification?")) return;
+            try {
+                await fetch(API_CERTIFICATIONS + id, { method: 'DELETE' });
+                showToast("Certification deleted!");
+                loadCertifications();
+            } catch (e) { showToast("Failed to delete!", true); }
+        }
+
+        document.getElementById('certificationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('certSubmitBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                const editId = document.getElementById('editCertificationId').value;
+                const existingCert = editId ? globalCertifications.find(x => x.id === editId) : null;
+                let finalImageUrl = existingCert ? existingCert.imageUrl : null;
+
+                const imageInput = document.getElementById('cert-imageFile');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append("file", imageInput.files[0]);
+                    const uploadRes = await fetch(UPLOAD_URL, { method: 'POST', body: formData });
+                    finalImageUrl = (await uploadRes.json()).imageUrl;
+                }
+
+                const payload = {
+                    title: document.getElementById('cert-title').value,
+                    issuer: document.getElementById('cert-issuer').value,
+                    date: document.getElementById('cert-date').value,
+                    url: document.getElementById('cert-url').value || null,
+                    imageUrl: finalImageUrl,
+                    visible: document.getElementById('cert-visible').checked
+                };
+
+                const endpoint = editId ? API_CERTIFICATIONS + editId : API_CERTIFICATIONS;
+                const res = await fetch(endpoint, {
+                    method: editId ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Failed to save certification");
+                showToast(editId ? "Certification updated successfully!" : "Certification saved successfully!");
+                resetCertificationForm();
+                loadCertifications();
+            } catch (e) {
+                showToast(e.message, true);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Certification';
+                btn.disabled = false;
+            }
+        });
+
+
+        // Panggil saat tab experience dibuka atau halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProjects();
+            loadExperiences();
+            loadEducations();
+        });
+    </script>
+</body>
+
+</html>

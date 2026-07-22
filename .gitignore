@@ -1,0 +1,31 @@
+# 1. Python Cache & Compiled Files (Dilihat dari folder __pycache__ kamu)
+__pycache__/
+routers/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 2. Environment Variables & Secrets (Sangat Penting! Menjaga API Key/Database URL aman)
+.env
+.env.*
+
+# 3. Virtual Environment (Jika ada folder venv/env di lokal)
+venv/
+.venv/
+env/
+ENV/
+
+# 4. File bawaan macOS (Dilihat dari OS Mac yang kamu pakai)
+.DS_Store
+
+# 5. Database Lokal (Jika pakai SQLite seperti database.db / test.db)
+*.db
+*.sqlite
+*.sqlite3
+
+# 6. Folder Node.js (Jika nanti ada dependensi frontend)
+node_modules/
+
+# 7. File Gambar Hasil Upload User (Opsional: Agar git tidak berat oleh gambar yang diupload di local)
+# uploads/*
+# !uploads/.gitkeep
